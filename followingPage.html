@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyTok</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        /* Custom Animations */
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .heart-beat:active {
+            animation: heartBeat 0.3s ease-in-out;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <div class="relative h-screen">
+
+
+        <!-- Video Section -->
+        <div class="relative h-full">
+            <!-- Video Player (replacing static image) -->
+            <video 
+                class="object-cover h-full w-full" 
+                loop
+                autoplay
+                playsinline
+            >
+                <source src="video3.mp4" type="video/mp4">
+            </video>
+
+            
+            <!-- Top Navigation with Active States -->
+            <div class="absolute top-0 left-0 right-0 flex justify-center items-center p-4 bg-gradient-to-b from-black/50 to-transparent">
+                <div class="flex space-x-8">
+                    <button class="text-lg font-semibold opacity-100 border-b-2 border-white">
+                        Following
+                    </button>
+                    <a href="forYouPage.html">
+                    <button class="text-lg font-semibold opacity-70 hover:opacity-100 transition-all">
+                        For You
+                    </button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Video Info with Better Spacing -->
+            <div class="absolute bottom-20 left-0 p-4 max-w-[80%]">
+                <div class="flex items-center space-x-2 mb-3">
+                    <span class="font-semibold">@Yourname</span>
+                    <span class="text-xs opacity-70">• 1-26</span>
+                </div>
+                <p class="text-sm mb-3 line-clamp-2">
+                    Description Here #hashtag #hashtag
+                </p>
+                <div class="flex items-center space-x-2 text-sm bg-black/30 px-3 py-1 rounded-full w-fit">
+                    <i class="fas fa-music text-xs"></i>
+                    <div class="marquee overflow-hidden whitespace-nowrap">
+                        <span>Music name here - Artist Name</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interaction Buttons with Animations -->
+            <div class="absolute bottom-20 right-2 p-4 flex flex-col items-center space-y-6">
+                <div class="flex flex-col items-center group cursor-pointer">
+                    <a href="profilePage.html">
+                    <img alt="Profile" class="rounded-full w-12 h-12 border-2 border-white mb-1 group-hover:scale-110 transition-all" src="profile-image-url.jpg"/>
+                    </a>
+                    <button class="bg-primary text-xs bg-cyan-500 px-2 py-1 rounded-full">Follow</button>
+                </div>
+                
+                <!-- Like Button -->
+                <button class="flex flex-col items-center space-y-1 heart-beat group">
+                    <i class="fas fa-heart text-3xl group-hover:text-red-500 transition-all"></i>
+                    <span class="text-xs">3.2K</span>
+                </button>
+
+                <!-- Comment Button -->
+                <button class="flex flex-col items-center space-y-1 group">
+                    <i class="fas fa-comment-dots text-3xl group-hover:text-blue-400 transition-all"></i>
+                    <span class="text-xs">64</span>
+                </button>
+
+                <!-- Share Button -->
+                <button class="flex flex-col items-center space-y-1 group">
+                    <i class="fas fa-share text-3xl group-hover:text-green-400 transition-all"></i>
+                    <span class="text-xs">Share</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation with Active States -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 flex justify-around items-center py-3 border-t border-gray-800">
+            <a href="forYouPage.html">
+            <button class="flex flex-col items-center space-y-1 group">
+                <i class="fas fa-home text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Home</span>
+            </button>
+            </a>
+            
+            <button class="flex flex-col items-center space-y-1 group">
+                <i class="fas fa-compass text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Discover</span>
+            </button>
+
+            <button class="flex flex-col items-center">
+                <div class="bg-gradient-to-r from-primary to-secondary p-3 rounded-lg">
+                    <i class="fas fa-plus text-xl"></i>
+                </div>
+            </button>
+
+            <button class="flex flex-col items-center space-y-1 group">
+                <i class="fas fa-inbox text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Inbox</span>
+            </button>
+
+            <button class="flex flex-col items-center space-y-1 group">
+                <i class="fas fa-user text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Profile</span>
+            </button>
+        </nav>
+    </div>
+
+    <script>
+        // Add video play/pause functionality
+        document.querySelector('video').addEventListener('click', function() {
+            this.paused ? this.play() : this.pause();
+        });
+
+        // Add like button functionality
+        let liked = false;
+        document.querySelector('.heart-beat').addEventListener('click', function() {
+            liked = !liked;
+            this.querySelector('i').style.color = liked ? '#ff2d55' : 'white';
+            this.querySelector('span').textContent = liked ? '3.2K' : '3.1K';
+        });
+    </script>
+</body>
+</html>

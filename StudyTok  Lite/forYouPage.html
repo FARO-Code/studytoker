@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StudyTok</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        /* Custom Animations */
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        
+        .heart-beat:active {
+            animation: heartBeat 0.3s ease-in-out;
+        }
+
+        /* Comment Section Animation */
+        @keyframes rise {
+            0% { transform: translateY(100%); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        /* Smooth transitions */
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+
+        /* Comment Section Styles */
+        .comment-section {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            padding: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            animation: rise 0.5s ease forwards;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .error-message {
+            color: red;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body class="bg-black text-white font-sans">
+    <div class="relative h-screen overflow-hidden" id="video-container">
+        <!-- Video Section -->
+        <div class="relative h-full" id="video-wrapper">
+            <!-- Video Player -->
+            <video 
+                class="object-cover h-full w-full" 
+                loop
+                autoplay
+                playsinline
+                id="video-player"
+            >
+                <source src="videoResources/video1.mp4" type="video/mp4">
+            </video>
+
+            <!-- Top Navigation -->
+            <div class="absolute top-0 left-0 right-0 flex justify-center items-center p-4 bg-gradient-to-b from-black/50 to-transparent">
+                <div class="flex space-x-8">
+                    <button class="text-lg font-semibold opacity-100 border-b-2 border-white">
+                        For You
+                    </button>
+                </div>
+            </div>
+
+            <!-- Video Info -->
+            <div class="absolute bottom-20 left-0 p-4 max-w-[80%]">
+                <div class="flex items-center space-x-2 mb-3">
+                    <a href="profilePage.html">
+                        <span class="font-semibold">@Yourname</span>
+                    </a>
+                    <span class="text-xs opacity-70">• 1-26</span>
+                </div>
+                <p id="description" class="text-sm mb-3 line-clamp-2">
+                    Description Here / Reference Book
+                </p>
+                <div class="flex items-center space-x-2 text-sm bg-black/30 px-3 py-1 rounded-full w-fit">
+                    <i class="fas fa-music text-xs"></i>
+                    <a href="https://music.youtube.com/search?q=Music%20name%20here%20-%20Artist%20Name" target="_blank" class="whitespace-nowrap">
+                        <span class="marquee overflow-hidden whitespace-nowrap">Music name here - Artist Name</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Interaction Buttons -->
+            <div class="absolute bottom-20 right-2 p-4 flex flex-col items-center space-y-6">
+                <div class=" flex flex-col items-center group cursor-pointer ">
+                    <a href="profilePage.html">
+                        <img alt="Profile" class=" rounded-full w-12 h-12 border -2 border-white mb-1 group-hover:scale-110 transition-all" src="profile-image-url.jpg"/>
+                    </a>
+                    <button class="bg-primary text-xs bg-cyan-500 fg-white px-2 py-1 rounded-full">Follow</button>
+                </div>
+                
+                <!-- Like Button -->
+                <button class="flex flex-col items-center space-y-1 heart-beat group">
+                    <i class="fas fa-heart text-3xl group-hover:text-red-500 transition-all"></i>
+                    <span class="text-xs">3.2K</span>
+                </button>
+
+                <!-- Comment Button -->
+                <button class="flex flex-col items-center space-y-1 group" id="comment-button">
+                    <i class="fas fa-comment-dots text-3xl group-hover:text-blue-400 transition-all"></i>
+                    <span class="text-xs">64</span>
+                </button>
+
+                <!-- Share Button -->
+                <button class="flex flex-col items-center space-y-1 group" id="share-button">
+                    <i class="fas fa-share text-3xl group-hover:text-green-400 transition-all"></i>
+                    <span class="text-xs">Share</span>
+                </button>
+            </div>
+
+            <!-- Comment Section -->
+            <div class="absolute bottom-20 left-0 p-4 max-w-[80%] hidden" id="comment-section">
+                <div class="comment-section">
+                    <input type="text" id="comment-input" class="bg-black/30 px-3 py-1 rounded-full w-full" placeholder="Add a comment...">
+                    <button id="comment-submit" class="bg-primary text-xs bg-cyan-500 fg-white px-2 py-1 rounded-full">Post</button>
+                    <div id="comment-list">
+                        <!-- Comments will be displayed here -->
+                        <div class="comment">This is a sample comment.</div>
+                        <div class="comment">This is another sample comment.</div>
+                    </div>
+                    <p id="error-message" class="error-message"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <nav class="fixed bottom-0 left-0 right-0 bg-black/95 flex justify-around items-center py-3 border-t border-gray-800">
+            <a href="forYouPage.html">
+                <button class="flex flex-col items-center space-y-1 group">
+                    <i class="fas fa-home text-xl opacity-70 group-hover:opacity-100"></i>
+                    <span class="text-[10px] opacity-70 group-hover:opacity-100">Home</span>
+                </button>
+            </a>
+            
+            <button class="flex flex-col items-center space-y-1 group" id="read-button">
+                <i class="fas fa-book text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Read</span>
+            </button>
+
+            <button class="flex flex-col items-center">
+                <div class="bg-gradient-to-r from-primary to-secondary p-3 rounded-lg">
+                    <i class="fas fa-plus text-xl"></i>
+                </div>
+            </button>
+
+            <a href="https://www.notion.so" target="_blank">
+                <button class="flex flex-col items-center space-y-1 group">
+                    <i class="fas fa-inbox text-xl opacity-70 group-hover:opacity-100"></i>
+                    <span class="text-[10px] opacity-70 group-hover:opacity-100">Notion</span>
+                </button>
+            </a>
+
+            <a href="userPage.html">
+                <button class="flex flex-col items-center space-y-1 group">
+                    <i class="fas fa-user text-xl opacity-70 group-hover:opacity-100"></i>
+                    <span class="text-[10px] opacity-70 group-hover:opacity-100">Profile</span>
+                </button>
+            </a>
+        </nav>
+
+        <script>
+            // Add video play/pause functionality
+            document.querySelector('video').addEventListener('click', function() {
+                this.paused ? this.play() : this.pause();
+            });
+
+            // Add like button functionality
+            let liked = false;
+            document.querySelector('.heart-beat').addEventListener('click', function() {
+                liked = !liked;
+                this.querySelector('i').style.color = liked ? '#ff2d55' : 'white';
+                this.querySelector('span').textContent = liked ? '3.2K' : '3.1K';
+            });
+
+            // Add comment button functionality
+            document .getElementById('comment-button').addEventListener('click', function() {
+                document.getElementById('comment-section').classList.toggle('hidden');
+            });
+
+            // Add comment submission functionality 
+            document.getElementById('comment-submit').addEventListener('click', function() {
+                const commentInput = document.getElementById('comment-input');
+                const commentList = document.getElementById('comment-list');
+                const newComment = document.createElement('div');
+                const commentText = commentInput.value.trim();
+
+                if (commentText.length > 100) {
+                    document.getElementById('error-message').textContent = 'Comment cannot exceed 100 characters.';
+                    return;
+                }
+
+                newComment.textContent = commentText;
+                newComment.className = 'comment';
+                commentList.appendChild(newComment);
+                commentInput.value = '';
+            });
+
+            // Add share button functionality
+            document.getElementById('share-button').addEventListener('click', function() {
+                const currentUrl = window.location.href;
+                navigator.clipboard.writeText(currentUrl);
+                alert('Link copied to clipboard!');
+            });
+
+            // Add read button functionality
+            document.getElementById('read-button').addEventListener('click', function() {
+                const description = document.getElementById('description').textContent;
+                const searchUrl = `https://www.google.com/search?q=${description}`;
+                window.open(searchUrl, '_blank');
+            });
+
+            // Swipe functionality
+            let startTouchY;
+            let videoIndex = 0;
+            let videoSources = [
+                'videoResources/video1.mp4', 'videoResources/video2.mp4', 'videoResources/video3.mp4',
+                'videoResources/video4.mp4', 'videoResources/video5.mp4', 'videoResources/video6.mp4',
+                'videoResources/video7.mp4', 'videoResources/video8.mp4', 'videoResources/video9.mp4',
+                'videoResources/video10.mp4', 'videoResources/video11.mp4', 'videoResources/video12.mp4',
+                'videoResources/video13.mp4', 'videoResources/video14.mp4', 'videoResources/video15.mp4',
+                'videoResources/video16.mp4', 'videoResources/video17.mp4', 'videoResources/video18.mp4',
+                'videoResources/video19.mp4', 'videoResources/video20.mp4', 'videoResources/video21.mp4',
+                'videoResources/video22.mp4', 'videoResources/video23.mp4', 'videoResources/video24.mp4',
+                'videoResources/video25.mp4', 'videoResources/video26.mp4', 'videoResources/video27.mp4',
+                'videoResources/video28.mp4', 'videoResources/video29.mp4', 'videoResources/video30.mp4',
+                'videoResources/video31.mp4', 'videoResources/video32.mp4', 'videoResources/video33.mp4',
+                'videoResources/video34.mp4', 'videoResources/video35.mp4', 'videoResources/video36.mp4',
+                'videoResources/video37.mp4', 'videoResources/video38.mp4', 'videoResources/video39.mp4',
+                'videoResources/video40.mp4', 'videoResources/video41.mp4', 'videoResources/video42.mp4',
+                'videoResources/video43.mp4', 'videoResources/video44.mp4', 'videoResources/video45.mp4',
+                'videoResources/video46.mp4', 'videoResources/video47.mp4', 'videoResources/video48.mp4',
+                'videoResources/video49.mp4', 'videoResources/video50.mp4', 'videoResources/video51.mp4',
+                'videoResources/video52.mp4', 'videoResources/video53.mp4', 'videoResources/video54.mp4',
+                'videoResources/video55.mp4', 'videoResources/video56.mp4', 'videoResources/video57.mp4',
+                'videoResources/video58.mp4', 'videoResources/video59.mp4', 'videoResources/video60.mp4',
+                'videoResources/video61.mp4', 'videoResources/video62.mp4', 'videoResources/video63.mp4',
+                'videoResources/video64.mp4', 'videoResources/video65.mp4', 'videoResources/video66.mp4',
+                'videoResources/video67.mp4', 'videoResources/video68.mp4', 'videoResources/video69.mp4',
+                'videoResources/video70.mp4', 'videoResources/video71.mp4', 'videoResources/video72.mp4',
+                'videoResources/video73.mp4', 'videoResources/video74.mp4', 'videoResources/video75.mp4',
+                'videoResources/video76.mp4', 'videoResources/video77.mp4', 'videoResources/video78.mp4',
+                'videoResources/video79.mp4', 'videoResources/video80.mp4', 'videoResources/video81.mp4',
+                'videoResources/video82.mp4', 'videoResources/video83.mp4', 'videoResources/video84.mp4',
+                'videoResources/video85.mp4', 'videoResources/video86.mp4', 'videoResources/video87.mp4',
+                'videoResources/video88.mp4', 'videoResources/video 89.mp4', 'videoResources/video90.mp4',
+                'videoResources/video91.mp4', 'videoResources/video92.mp4', 'videoResources/video93.mp4',
+                'videoResources/video94.mp4', 'videoResources/video95.mp4', 'videoResources/video96.mp4',
+                'videoResources/video97.mp4', 'videoResources/video98.mp4', 'videoResources/video99.mp4',
+                'videoResources/video100.mp4'
+            ]; // Add more video sources here
+            let videoPlayer = document.getElementById('video-player');
+
+            document.getElementById('video-container').addEventListener('touchstart', function(event) {
+                startTouchY = event.touches[0].clientY; // Get the starting Y position
+            });
+
+            document.getElementById('video-container').addEventListener('touchend', function(event) {
+                let endTouchY = event.changedTouches[0].clientY; // Get the ending Y position
+                let swipeDirection = endTouchY - startTouchY; // Calculate the swipe direction
+
+                if (swipeDirection > 50) {
+                    // Swipe down
+                    videoIndex = (videoIndex - 1 + videoSources.length) % videoSources.length; // Load previous video
+                    videoPlayer.src = videoSources[videoIndex];
+                    videoPlayer.play(); // Play the new video
+                } else if (swipeDirection < -50) {
+                    // Swipe up
+                    videoIndex = (videoIndex + 1) % videoSources.length; // Load next video
+                    videoPlayer.src = videoSources[videoIndex];
+                    videoPlayer.play(); // Play the new video
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <style>
+        /* Custom styles for hover effects */
+        .gallery-img:hover {
+            transform: scale(1.05);
+            transition: transform 0.3s ease;
+        }
+        .follow-button {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .followed {
+            background-color: #4caf50; /* Green */
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="bg-black text-white font-sans">
+
+<div>
+
+    <!-- Header -->
+    <div class="flex justify-between items-center p-4">
+        <i class="fas fa-user text-xl"></i>
+        <i class="fas fa-ellipsis-h text-xl"></i>
+    </div>
+
+    <!-- Profile Info -->
+    <div class="text-center">
+        <img alt="Profile picture of user" class="w-40 h-40 rounded-full mx-auto shadow-lg" src="profile-image-url.jpg"/>
+        <h1 class="text-xl font-semibold mt-2">Mr. Study Tok</h1>
+        <p class="text-gray-500">@studytoker1</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="flex justify-around mt-4">
+        <div class="text-center">
+            <p class="font-semibold">14</p>
+            <p class="text-gray-500">Mentors</p>
+        </div>
+        <div class="text-center">
+            <p class="font-semibold">38</p>
+            <p class="text-gray-500">Scholars</p>
+        </div>
+        <div class="text-center">
+            <p class="font-semibold">172</p>
+            <p class="text-gray-500">Likes</p>
+        </div>
+    </div>
+
+    <!-- Edit Profile Button -->
+    <div class="flex justify-center mt-4">
+        <button id="followButton" class="follow-button border border-gray-300 rounded px-4 py-2 mr-2">
+            Follow
+        </button>
+        <button id="bookmarkButton" class="border border-gray-300 rounded px-4 py-2">
+            <i id="bookmarkIcon" class="far fa-bookmark"></i>
+        </button>
+    </div>
+
+    <!-- Bio -->
+    <div class="text-center text-gray-500 mt-2">
+        <p>Just another StudyToker doing his thing 😆</p>
+    </div>
+
+    <!-- Gallery -->
+    <div class="grid grid-cols-2 gap-0.5 mt-4">
+        <img alt="Image 1" class="gallery-img w-full h-full object-cover" src="bookpic1.jpeg"/>
+        <img alt="Image 2" class="gallery-img w-full h-full object-cover" src="bookpic2.jpg"/>
+        <img alt="Image 3" class="gallery-img w-full h-full object-cover" src="bookpic3.jpg"/>
+        <img alt="Image 4" class="gallery-img w-full h-full object-cover" src="bookpic4.jpeg"/>
+        <img alt="Image 5" class="gallery-img w-full h-full object-cover" src="bookpic5.jpeg"/>
+    </div>
+
+    <!-- Navigation Bar -->
+    <nav class="fixed bottom-0 left-0 right-0 bg-black/95 flex justify-around items-center py-3 border-t border-gray-800">
+        <a href="forYouPage.html">
+            <button class="flex flex-col items-center space-y-1 group">
+                <i class="fas fa-home text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Home</span>
+            </button>
+        </a>
+
+        <button class="flex flex-col items-center space-y-1 group">
+            <i class="fas fa-compass text-xl opacity-70 group-hover:opacity-100"></i>
+            <span class="text-[10px] opacity-70 group -hover:opacity-100">Discover</span>
+        </button>
+
+        <button class="flex flex-col items-center">
+            <div class="bg-gradient-to-r from-primary to-secondary p-3 rounded-lg">
+                <i class="fas fa-plus text-xl"></i>
+            </div>
+        </button>
+
+        <button class="flex flex-col items-center space-y-1 group">
+            <i class="fas fa-inbox text-xl opacity-70 group-hover:opacity-100"></i>
+            <span class="text-[10px] opacity-70 group-hover:opacity-100">Inbox</span>
+        </button>
+
+        <a href="userPage.html">
+            <button class="flex flex-col items-center space-y-1 group">
+                <i class="fas fa-user text-xl opacity-70 group-hover:opacity-100"></i>
+                <span class="text-[10px] opacity-70 group-hover:opacity-100">Profile</span>
+            </button>
+        </a>
+    </nav>
+
+</div>
+
+<script>
+    const followButton = document.getElementById('followButton');
+    const bookmarkButton = document.getElementById('bookmarkButton');
+    const bookmarkIcon = document.getElementById('bookmarkIcon');
+
+    followButton.addEventListener('click', () => {
+        followButton.classList.toggle('followed');
+        if (followButton.classList.contains('followed')) {
+            followButton.textContent = 'Followed';
+        } else {
+            followButton.textContent = 'Follow';
+        }
+    });
+
+    bookmarkButton.addEventListener('click', () => {
+        bookmarkIcon.classList.toggle('fas');
+        bookmarkIcon.classList.toggle('far');
+    });
+</script>
+
+</body>
+</html>
